@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="千禧年">
 <meta property="og:description" content="介绍Dubbo中的参数验证基于JSR-303，它是JAVA EE 6中的一项子规范，通过注解的方式用来对 Java Bean中字段的值进行简单验证。Consumer端要调用Provider端的接口，调用接口的话就会有参数用于传递数据，这里的验证指的就是对这个参数进行验证 这个JSR基于注释的JavaBeanTM验证定义一个元数据模型和API，通过使用XML验证描述符覆盖和扩展元数据。 准备参数验证">
 <meta property="og:locale" content="JAVA">
-<meta property="og:image" content="c:%5CUsers%5Cchang%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564474103249.png">
-<meta property="og:updated_time" content="2019-08-23T06:46:44.696Z">
+<meta property="og:image" content="https://qxn-top.oss-cn-shanghai.aliyuncs.com/1564474103249.png?Expires=1566611350&OSSAccessKeyId=TMP.hXAijkDcXof9PpjuZ5jFWQxJ38z99zbSx5Le2aeb4qTJFy9yPxpLBbJFCjwpkCkynu4DH4jqrDf3Gcwf4bYdTK3AqDVihTgbfXMmyx3HZAxjXVAgNM2jRGnMMwAvbX.tmp&Signature=8XCj8WVx7gcZXazO2C2x4ek9d2Y%3D">
+<meta property="og:updated_time" content="2019-08-23T07:49:50.764Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dubbo参数验证">
 <meta name="twitter:description" content="介绍Dubbo中的参数验证基于JSR-303，它是JAVA EE 6中的一项子规范，通过注解的方式用来对 Java Bean中字段的值进行简单验证。Consumer端要调用Provider端的接口，调用接口的话就会有参数用于传递数据，这里的验证指的就是对这个参数进行验证 这个JSR基于注释的JavaBeanTM验证定义一个元数据模型和API，通过使用XML验证描述符覆盖和扩展元数据。 准备参数验证">
-<meta name="twitter:image" content="c:%5CUsers%5Cchang%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564474103249.png">
+<meta name="twitter:image" content="https://qxn-top.oss-cn-shanghai.aliyuncs.com/1564474103249.png?Expires=1566611350&OSSAccessKeyId=TMP.hXAijkDcXof9PpjuZ5jFWQxJ38z99zbSx5Le2aeb4qTJFy9yPxpLBbJFCjwpkCkynu4DH4jqrDf3Gcwf4bYdTK3AqDVihTgbfXMmyx3HZAxjXVAgNM2jRGnMMwAvbX.tmp&Signature=8XCj8WVx7gcZXazO2C2x4ek9d2Y%3D">
 
 
 
@@ -320,11 +320,9 @@
 <li><p>结果</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ConstraintViolationImpl&#123;interpolatedMessage=&apos;最大不能超过30&apos;, propertyPath=age, rootBeanClass=class com.dist.entity.ValidationParameter, messageTemplate=&apos;&#123;javax.validation.constraints.Max.message&#125;&apos;&#125;]</span><br></pre></td></tr></table></figure>
 
-
-
+<p><img src="https://qxn-top.oss-cn-shanghai.aliyuncs.com/1564474103249.png?Expires=1566611350&OSSAccessKeyId=TMP.hXAijkDcXof9PpjuZ5jFWQxJ38z99zbSx5Le2aeb4qTJFy9yPxpLBbJFCjwpkCkynu4DH4jqrDf3Gcwf4bYdTK3AqDVihTgbfXMmyx3HZAxjXVAgNM2jRGnMMwAvbX.tmp&Signature=8XCj8WVx7gcZXazO2C2x4ek9d2Y%3D" alt="1564474103249"></p>
 </li>
 </ol>
-<p>   <img src="C:%5CUsers%5Cchang%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1564474103249.png" alt="1564474103249"></p>
 <ol start="5">
 <li><p>除此之外，参数验证可以指定某个方法进行验证，而不是全部验证了。应用场景：比如说保存的时候，年龄只能在18-30岁之间，但修改的时候不需要这个筛选条件，这个可以通过<strong>分组验证</strong>来实现，用于区分验证场景。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package com.dist;</span><br><span class="line"></span><br><span class="line">import com.dist.entity.ValidationParameter;</span><br><span class="line"></span><br><span class="line">import javax.validation.GroupSequence;</span><br><span class="line">import javax.validation.constraints.*；</span><br><span class="line"></span><br><span class="line">public interface ValidationService &#123;</span><br><span class="line"></span><br><span class="line">    @interface Save&#123;&#125; // 与方法同名接口，首字母大写，用于区分验证场景</span><br><span class="line">    void save(ValidationParameter parameter);</span><br><span class="line"></span><br><span class="line">    void update(ValidationParameter parameter);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
