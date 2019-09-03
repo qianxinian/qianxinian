@@ -695,6 +695,142 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2019/07/25/X-Frame-Options配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="千禧年">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="千禧年">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/25/X-Frame-Options配置/" itemprop="url">X-Frame-Options配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-25T18:02:00+08:00">
+                2019-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>服务器没有返回X-Frame-Options响应header，这意味着该网站可能面临clickjacking attack（点击劫持攻击）的风险。 X-Frame-Options HTTP响应头可用于指示是否应允许浏览器在框架或iframe内呈现页面。</p>
+<p>点击劫持，clickjacking，也被称为UI-覆盖攻击。它是通过覆盖不可见的框架误导受害者点击。虽然受害者点击的是他所看到的网页，但其实他所点击的是被黑客精心构建的另一个置于原网页上面的透明页面。这种攻击利用了HTML中<iframe>等标签的透明属性。</iframe></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><hr>
+<ol>
+<li><p>在web.xml中，找到一下代码，取消注释。如果没有，则在web-app标签内，找一空白地方添加。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;filter&gt;</span><br><span class="line">		&lt;filter-name&gt;httpHeaderSecurity&lt;/filter-name&gt;</span><br><span class="line">		&lt;filter-class&gt;org.apache.catalina.filters.HttpHeaderSecurityFilter&lt;/filter-class&gt;</span><br><span class="line">		&lt;init-param&gt;</span><br><span class="line">			&lt;param-name&gt;antiClickJackingEnabled&lt;/param-name&gt;</span><br><span class="line">			&lt;param-value&gt;true&lt;/param-value&gt;</span><br><span class="line">		&lt;/init-param&gt;</span><br><span class="line">		&lt;init-param&gt;</span><br><span class="line">			&lt;param-name&gt;antiClickJackingOption&lt;/param-name&gt;</span><br><span class="line">			&lt;param-value&gt;deny&lt;/param-value&gt;</span><br><span class="line">		&lt;/init-param&gt;</span><br><span class="line">		&lt;async-supported&gt;true&lt;/async-supported&gt;</span><br><span class="line">	&lt;/filter&gt;</span><br><span class="line">	&lt;filter-mapping&gt;</span><br><span class="line">		&lt;filter-name&gt;httpHeaderSecurity&lt;/filter-name&gt;</span><br><span class="line">		&lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br><span class="line">	&lt;/filter-mapping&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>X-Frame-Options 设置可以防止Iframe网页嵌套，属于tomcat相关安全配置。</p>
+</li>
+<li><p>X-Frame-Options值由三种，deny，sameorigin，allow-from</p>
+<ol>
+<li>DENY：表示该页面不允许在 iframe 中展示，即便是在相同域名的页面中嵌套也不允许。</li>
+<li>SAMEORIGIN：表示该页面可以在相同域名页面的 iframe 中展示。</li>
+<li>ALLOW-FROM： <a href="http://xxxxx.com" target="_blank" rel="noopener">http://xxxxx.com</a>   表示该页面可以在指定来源的 iframe 中展示</li>
+</ol>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2019/06/27/Maven插件实现远程项目部署/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -877,7 +1013,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2018/07/11/Oracle数据库导入导出/">
+    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2018/09/17/Oracle数据库导入导出/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="千禧年">
@@ -896,7 +1032,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/11/Oracle数据库导入导出/" itemprop="url">Oracle数据库导入导出</a></h1>
+                <a class="post-title-link" href="/2018/09/17/Oracle数据库导入导出/" itemprop="url">Oracle数据库导入导出</a></h1>
         
 
         <div class="post-meta">
@@ -908,8 +1044,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-11T08:35:58+08:00">
-                2018-07-11
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-17T10:17:00+08:00">
+                2018-09-17
               </time>
             
 
@@ -1063,7 +1199,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1076,7 +1212,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>

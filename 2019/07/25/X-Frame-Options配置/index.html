@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Java,">
+  <meta name="keywords" content="Tomcat,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="背景方便快速定位问题，之前从网上整理的。 ArithmeticException——由于除数为0引起的异常；ArrayStoreException——由于数组存储空间不够引起的异常；ClassCastException—一当把一个对象归为某个类，但实际上此对象并不是由这个类 创建的，也不是其子类创建的，则会引起异常；IllegalMonitorStateException——监控器状态出错引起的异">
-<meta name="keywords" content="Java">
+<meta name="description" content="场景服务器没有返回X-Frame-Options响应header，这意味着该网站可能面临clickjacking attack（点击劫持攻击）的风险。 X-Frame-Options HTTP响应头可用于指示是否应允许浏览器在框架或iframe内呈现页面。 点击劫持，clickjacking，也被称为UI-覆盖攻击。它是通过覆盖不可见的框架误导受害者点击。虽然受害者点击的是他所看到的网页，但其实他">
+<meta name="keywords" content="Tomcat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java常见异常解释">
-<meta property="og:url" content="http://qianxinian.top/2019/08/05/Java常见异常解释/index.html">
+<meta property="og:title" content="X-Frame-Options配置">
+<meta property="og:url" content="http://qianxinian.top/2019/07/25/X-Frame-Options配置/index.html">
 <meta property="og:site_name" content="千禧年">
-<meta property="og:description" content="背景方便快速定位问题，之前从网上整理的。 ArithmeticException——由于除数为0引起的异常；ArrayStoreException——由于数组存储空间不够引起的异常；ClassCastException—一当把一个对象归为某个类，但实际上此对象并不是由这个类 创建的，也不是其子类创建的，则会引起异常；IllegalMonitorStateException——监控器状态出错引起的异">
+<meta property="og:description" content="场景服务器没有返回X-Frame-Options响应header，这意味着该网站可能面临clickjacking attack（点击劫持攻击）的风险。 X-Frame-Options HTTP响应头可用于指示是否应允许浏览器在框架或iframe内呈现页面。 点击劫持，clickjacking，也被称为UI-覆盖攻击。它是通过覆盖不可见的框架误导受害者点击。虽然受害者点击的是他所看到的网页，但其实他">
 <meta property="og:locale" content="JAVA">
-<meta property="og:updated_time" content="2019-09-03T03:08:24.397Z">
+<meta property="og:updated_time" content="2019-09-03T07:42:09.923Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java常见异常解释">
-<meta name="twitter:description" content="背景方便快速定位问题，之前从网上整理的。 ArithmeticException——由于除数为0引起的异常；ArrayStoreException——由于数组存储空间不够引起的异常；ClassCastException—一当把一个对象归为某个类，但实际上此对象并不是由这个类 创建的，也不是其子类创建的，则会引起异常；IllegalMonitorStateException——监控器状态出错引起的异">
+<meta name="twitter:title" content="X-Frame-Options配置">
+<meta name="twitter:description" content="场景服务器没有返回X-Frame-Options响应header，这意味着该网站可能面临clickjacking attack（点击劫持攻击）的风险。 X-Frame-Options HTTP响应头可用于指示是否应允许浏览器在框架或iframe内呈现页面。 点击劫持，clickjacking，也被称为UI-覆盖攻击。它是通过覆盖不可见的框架误导受害者点击。虽然受害者点击的是他所看到的网页，但其实他">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://qianxinian.top/2019/08/05/Java常见异常解释/">
+  <link rel="canonical" href="http://qianxinian.top/2019/07/25/X-Frame-Options配置/">
 
 
 
 
 
-  <title>Java常见异常解释 | 千禧年</title>
+  <title>X-Frame-Options配置 | 千禧年</title>
   
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2019/08/05/Java常见异常解释/">
+    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2019/07/25/X-Frame-Options配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="千禧年">
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java常见异常解释</h1>
+          <h1 class="post-title" itemprop="name headline">X-Frame-Options配置</h1>
         
 
         <div class="post-meta">
@@ -262,8 +262,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-05T14:28:00+08:00">
-                2019-08-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-25T18:02:00+08:00">
+                2019-07-25
               </time>
             
 
@@ -300,8 +300,23 @@
       
 
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><strong>方便快速定位问题，之前从网上整理的。</strong></p>
-<p>ArithmeticException——由于除数为0引起的异常；<br>ArrayStoreException——由于数组存储空间不够引起的异常；<br>ClassCastException—一当把一个对象归为某个类，但实际上此对象并不是由这个类 创建的，也不是其子类创建的，则会引起异常；<br>IllegalMonitorStateException——监控器状态出错引起的异常；<br>NegativeArraySizeException—一数组长度是负数，则产生异常；<br>NullPointerException—一程序试图访问一个空的数组中的元素或访问空的对象中的 方法或变量时产生异常；<br>OutofMemoryException——用new语句创建对象时，如系统无法为其分配内存空 间则产生异常；<br>SecurityException——由于访问了不应访问的指针，使安全性出问题而引起异常；<br>IndexOutOfBoundsExcention——由于数组下标越界或字符串访问越界引起异常；<br>IOException——由于文件未找到、未打开或者I/O操作不能进行而引起异常；<br>ClassNotFoundException——未找到指定名字的类或接口引起异常；<br>CloneNotSupportedException——一程序中的一个对象引用Object类的clone方法，但此对象并没有连接Cloneable接口，从而引起异常；<br>InterruptedException—一当一个线程处于等待状态时，另一个线程中断此线程，从 而引起异常，有关线程的内容，将在下一章讲述；<br>NoSuchMethodException一所调用的方法未找到，引起异常；<br>Illega1AccessExcePtion—一试图访问一个非public方法；<br>StringIndexOutOfBoundsException——访问字符串序号越界，引起异常；<br>ArrayIdexOutOfBoundsException—一访问数组元素下标越界，引起异常；<br>NumberFormatException——字符的UTF代码数据格式有错引起异常；<br>IllegalThreadException—一线程调用某个方法而所处状态不适当，引起异常；<br>FileNotFoundException——未找到指定文件引起异常；<br>EOFException——未完成输入操作即遇文件结束引起异常。</p>
+        <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>服务器没有返回X-Frame-Options响应header，这意味着该网站可能面临clickjacking attack（点击劫持攻击）的风险。 X-Frame-Options HTTP响应头可用于指示是否应允许浏览器在框架或iframe内呈现页面。</p>
+<p>点击劫持，clickjacking，也被称为UI-覆盖攻击。它是通过覆盖不可见的框架误导受害者点击。虽然受害者点击的是他所看到的网页，但其实他所点击的是被黑客精心构建的另一个置于原网页上面的透明页面。这种攻击利用了HTML中<iframe>等标签的透明属性。</iframe></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><hr>
+<ol>
+<li><p>在web.xml中，找到一下代码，取消注释。如果没有，则在web-app标签内，找一空白地方添加。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;filter&gt;</span><br><span class="line">		&lt;filter-name&gt;httpHeaderSecurity&lt;/filter-name&gt;</span><br><span class="line">		&lt;filter-class&gt;org.apache.catalina.filters.HttpHeaderSecurityFilter&lt;/filter-class&gt;</span><br><span class="line">		&lt;init-param&gt;</span><br><span class="line">			&lt;param-name&gt;antiClickJackingEnabled&lt;/param-name&gt;</span><br><span class="line">			&lt;param-value&gt;true&lt;/param-value&gt;</span><br><span class="line">		&lt;/init-param&gt;</span><br><span class="line">		&lt;init-param&gt;</span><br><span class="line">			&lt;param-name&gt;antiClickJackingOption&lt;/param-name&gt;</span><br><span class="line">			&lt;param-value&gt;deny&lt;/param-value&gt;</span><br><span class="line">		&lt;/init-param&gt;</span><br><span class="line">		&lt;async-supported&gt;true&lt;/async-supported&gt;</span><br><span class="line">	&lt;/filter&gt;</span><br><span class="line">	&lt;filter-mapping&gt;</span><br><span class="line">		&lt;filter-name&gt;httpHeaderSecurity&lt;/filter-name&gt;</span><br><span class="line">		&lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br><span class="line">	&lt;/filter-mapping&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>X-Frame-Options 设置可以防止Iframe网页嵌套，属于tomcat相关安全配置。</p>
+</li>
+<li><p>X-Frame-Options值由三种，deny，sameorigin，allow-from</p>
+<ol>
+<li>DENY：表示该页面不允许在 iframe 中展示，即便是在相同域名的页面中嵌套也不允许。</li>
+<li>SAMEORIGIN：表示该页面可以在相同域名页面的 iframe 中展示。</li>
+<li>ALLOW-FROM： <a href="http://xxxxx.com" target="_blank" rel="noopener">http://xxxxx.com</a>   表示该页面可以在指定来源的 iframe 中展示</li>
+</ol>
+</li>
+</ol>
 
       
     </div>
@@ -319,7 +334,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
+            <a href="/tags/Tomcat/" rel="tag"># Tomcat</a>
           
         </div>
       
@@ -332,8 +347,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/26/ActiveMQ (一)/" rel="next" title="ActiveMQ（一）">
-                <i class="fa fa-chevron-left"></i> ActiveMQ（一）
+              <a href="/2019/06/27/Maven插件实现远程项目部署/" rel="next" title="Maven插件实现远程服务器部署">
+                <i class="fa fa-chevron-left"></i> Maven插件实现远程服务器部署
               </a>
             
           </div>
@@ -342,8 +357,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/23/Dubbo参数验证/" rel="prev" title="Dubbo参数验证">
-                Dubbo参数验证 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/26/ActiveMQ (一)/" rel="prev" title="ActiveMQ（一）">
+                ActiveMQ（一） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -469,7 +484,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">1.1.</span> <span class="nav-text">配置</span></a></li></ol></li></ol></div>
             
 
           </div>
