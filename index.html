@@ -1151,6 +1151,162 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2018/09/10/Word转Html-POI系列(一)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="千禧年">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="千禧年">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/10/Word转Html-POI系列(一)/" itemprop="url">Word转Html-POI系列(一)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-10T10:31:00+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>实现doc和docx文档在线预览</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li><p>Word转Html分为两种</p>
+<ol>
+<li>一种是doc转Html</li>
+<li>一种docx转Html</li>
+<li>还有一种特殊的doc格式，这种特殊的doc文档，是由FreeMaker生成的，看上去是doc，但本质是xml文件，所有无法直接转Html，解决办法是先将 伪doc文档 转成 真docx文档，然后通过docx在转换成Html</li>
+</ol>
+</li>
+<li><p>POM    (其中有个别Jar可能需要手动下载，然后放到Maven仓库中)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">&lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;commons-io&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;commons-io&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;2.4&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.apache.poi&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;poi&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;3.9&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.apache.poi&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;poi-ooxml&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;3.9&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.apache.poi&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;poi-scratchpad&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;3.9&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;fr.opensagres.xdocreport&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;xdocreport&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.0.4&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.apache.poi&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;ooxml-schemas&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;com.sun.jersey.samples&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;jsonp&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.11.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.jsoup&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;jsoup&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.11.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.7.22&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.7.22&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.7.22&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.apache&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;pdfbox&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;commons-logging&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;commons-logging&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.0.4&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;org.apache&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;fontbox&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.8.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">&lt;groupId&gt;net.sf.jacob-project&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;jacob&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.14.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;背景</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><ol>
+<li><p>doc转Html代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">FileInputStream fileInput = new FileInputStream(fileName); //获取原文件内容</span><br><span class="line">HWPFDocument wordDocument = new HWPFDocument(fileInput); //根据原文件内容生成HWPF文档</span><br><span class="line">//创建一个新文档</span><br><span class="line">Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();</span><br><span class="line">//核心类，初始化Word转换类，传入Document是需要它来创建Element节点，然后由该类接受并完成Html页面的大框架</span><br><span class="line">//实现原理并非直接转换的，最终生成的是一个Document文档，文档结构和Html结构一样，数据内容从HWPF文档获取</span><br><span class="line">WordToHtmlConverter wordToHtmlConverter = new WordToHtmlConverter(document);</span><br><span class="line">//处理Word文档中的图片</span><br><span class="line">wordToHtmlConverter = WordToHtml.imageProce(wordDocument, wordToHtmlConverter);</span><br><span class="line">//获取Html文档结构</span><br><span class="line">Document htmlDocument = wordToHtmlConverter.getDocument();</span><br><span class="line">//创建输出字节流</span><br><span class="line">ByteArrayOutputStream out = new ByteArrayOutputStream();</span><br><span class="line">//使用DOM节点创建一个新的输入源</span><br><span class="line">DOMSource domSource = new DOMSource(htmlDocument);</span><br><span class="line">//实例化转换结果类</span><br><span class="line">StreamResult streamResult = new StreamResult(out);</span><br><span class="line">//初始化工厂(不明白，反正是给下面设置什么东西用的，然后获取结果)</span><br><span class="line">TransformerFactory tf = TransformerFactory.newInstance();</span><br><span class="line">Transformer serializer = tf.newTransformer();</span><br><span class="line">//设置属性</span><br><span class="line">serializer.setOutputProperty(OutputKeys.ENCODING, &quot;utf-8&quot;);</span><br><span class="line">serializer.setOutputProperty(OutputKeys.INDENT, &quot;yes&quot;);</span><br><span class="line">serializer.setOutputProperty(OutputKeys.METHOD, &quot;html&quot;);</span><br><span class="line">//将XmlSource转换成Result结果</span><br><span class="line">serializer.transform(domSource, streamResult);</span><br><span class="line">//输出转成后的Html字符串</span><br><span class="line">String json = new String(out.toByteArray());</span><br><span class="line">out.close();</span><br><span class="line">//生成html文件</span><br><span class="line">writeFile(json, outPutFile);        //JSON是Html的内容，outPutFile是输出地址</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>docx转Html代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">String fileOutName = outPutFile;</span><br><span class="line">// 获取原文档</span><br><span class="line">XWPFDocument document = new XWPFDocument(new FileInputStream(fileName));</span><br><span class="line">// 初始化XHTMLOptions</span><br><span class="line">XHTMLOptions options = XHTMLOptions.create();</span><br><span class="line">// 存放图片的文件夹</span><br><span class="line">options.setExtractor(new FileImageExtractor(new File(tempPath)));</span><br><span class="line">// html中图片的路径</span><br><span class="line">options.URIResolver(new BasicURIResolver(&quot;image&quot;));</span><br><span class="line">options.setIgnoreStylesIfUnused(false);</span><br><span class="line">options.setFragment(true);</span><br><span class="line">// 生成Html文件</span><br><span class="line">File outFile = new File(fileOutName);</span><br><span class="line">outFile.getParentFile().mkdirs();</span><br><span class="line">OutputStream out = new FileOutputStream(outFile);</span><br><span class="line">//将Word文档中的内容写入到Html中</span><br><span class="line">XHTMLConverter.getInstance().convert(document, out, options);</span><br><span class="line">//配置输出文件以及编码</span><br><span class="line">FileInputStream in = new FileInputStream(outPutFile);</span><br><span class="line">//size 为字串的长度 ，这里一次性读完</span><br><span class="line">int size = in.available();</span><br><span class="line">byte[] buffer = new byte[size];</span><br><span class="line">in.read(buffer);</span><br><span class="line">in.close();</span><br><span class="line">String str = new String(buffer, &quot;UTF-8&quot;);</span><br><span class="line">//设置表格样式</span><br><span class="line">String html = &quot;&lt;html&gt;&lt;head&gt;&lt;style&gt;table&#123;border-collapse:collapse&#125;td&#123;border:1px solid #DDD&#125;&lt;/style&gt;&lt;head/&gt;&lt;body&gt;&quot;+str+&quot;&lt;/body&gt;&lt;/html&gt;&quot;;</span><br><span class="line">System.out.println(html);</span><br><span class="line">//写入文件</span><br><span class="line">writeFile(html,outPutFile);        //JSON是Html的内容，outPutFile是输出地址</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成Html方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 写文件</span><br><span class="line">*</span><br><span class="line">* @param content        //是要生成的文件内容</span><br><span class="line">* @param path            //输出地址</span><br><span class="line">*/</span><br><span class="line">public static void writeFile(String content, String path) &#123;</span><br><span class="line">    FileOutputStream fos = null;</span><br><span class="line">    BufferedWriter bw = null;</span><br><span class="line">    try &#123;</span><br><span class="line">        File file = new File(path);</span><br><span class="line">        fos = new FileOutputStream(file);</span><br><span class="line">        bw = new BufferedWriter(new OutputStreamWriter(fos, &quot;utf-8&quot;));</span><br><span class="line">        bw.write(content);</span><br><span class="line">    &#125; catch (FileNotFoundException fnfe) &#123;</span><br><span class="line">    	fnfe.printStackTrace();</span><br><span class="line">    &#125; catch (IOException ioe) &#123;</span><br><span class="line">    	ioe.printStackTrace();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            if (bw != null)</span><br><span class="line">                bw.close();</span><br><span class="line">            if (fos != null)</span><br><span class="line">                fos.close();</span><br><span class="line">        &#125; catch (IOException ie) &#123;</span><br><span class="line">            ie.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>抽取图片方法，本来是doc转html内代码，但是我单独抽取出来了，感觉写在一起太乱了。原理是将word文档种的图片保存到本地，然后在把图片连接放到html中，这里需要注意的是tempPath 这个是在html中图片地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 转换并保存图片</span><br><span class="line">*</span><br><span class="line">* @param wordDocument 原文档</span><br><span class="line">* @param wordToHtmlConverter 转换器</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">public static WordToHtmlConverter imageProce(HWPFDocument wordDocument, WordToHtmlConverter wordToHtmlConverter) &#123;</span><br><span class="line">//图片处理（接口类，需要实现方法）</span><br><span class="line">PicturesManager picturesManager = new PicturesManager() &#123;</span><br><span class="line">    /**</span><br><span class="line">    *图片的属性</span><br><span class="line">    * @param content 内容字节</span><br><span class="line">    * @param pictureType 类型</span><br><span class="line">    * @param suggestedName 名称</span><br><span class="line">    * @param widthInches 宽度</span><br><span class="line">    * @param heightInches 高度</span><br><span class="line">    * @return</span><br><span class="line">    */</span><br><span class="line"></span><br><span class="line">    public String savePicture(byte[] content, PictureType pictureType, String suggestedName, float widthInches, float heightInches) &#123;</span><br><span class="line">        String imagePath = tempPath + suggestedName;</span><br><span class="line">        return imagePath;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">    //添加图片处理功能</span><br><span class="line">    wordToHtmlConverter.setPicturesManager(picturesManager);</span><br><span class="line">    //将原文档内容传到WordToHtmlConverter转换类中</span><br><span class="line">    wordToHtmlConverter.processDocument(wordDocument);</span><br><span class="line"></span><br><span class="line">    // 获取原文档所有图片</span><br><span class="line">    List&lt;Picture&gt; pics = wordDocument.getPicturesTable().getAllPictures();</span><br><span class="line">    if (pics != null) &#123;</span><br><span class="line">        //循环所有图片</span><br><span class="line">        for (int i = 0; i &lt; pics.size(); i++) &#123;</span><br><span class="line">        	Picture pic = (Picture) pics.get(i);</span><br><span class="line">            try &#123;</span><br><span class="line">            //html页面上的路径(服务器上面需要的时候设置成相对路径，本地测试绝对路径)</span><br><span class="line">                pic.writeImageContent(new FileOutputStream(tempPath + pic.suggestFullFileName()));</span><br><span class="line">            &#125; catch (Exception e) &#123;</span><br><span class="line">            	e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return wordToHtmlConverter;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>FreeMaker生成的Doc转成Docx，这里需要使用到jacob包，以及这个包的 jacob-1.14.3-x64.dll ，jacob-1.14.3-x86.dll文件，这两个文件需要放到   System32和SysWOW64文件下</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* FreeMaker生成的word文档(因为本质上是xml)，转成docx</span><br><span class="line">* @param sourcePath</span><br><span class="line">* @param targetPath</span><br><span class="line">*/</span><br><span class="line">public static void docToDocx(String sourcePath,String targetPath)&#123;</span><br><span class="line">    ActiveXComponent app = new ActiveXComponent(&quot;Word.Application&quot;);</span><br><span class="line">    app.setProperty(&quot;Visible&quot;, false);</span><br><span class="line">    Dispatch docs = app.getProperty(&quot;Documents&quot;).toDispatch();</span><br><span class="line">    Dispatch doc = Dispatch.call(docs, &quot;open&quot;,sourcePath).getDispatch();</span><br><span class="line">    Dispatch.call(doc,&quot;SaveAS&quot;,targetPath,12);</span><br><span class="line">    Dispatch.call(doc,&quot;Close&quot;,false);</span><br><span class="line">    app.invoke(&quot;Quit&quot;,0);</span><br><span class="line">    System.out.println(&quot;freemaker to docx success&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注：xml格式的doc转docx没有用到POI，通过Jacob技术来实现的，至于Jacob会单独写一篇文章来记录下。</p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>POI的笔记一共分成四个部分，word转Html，Excel转Html，PDF转Html，以及PPT转Html。</li>
+<li>个人感觉在这几个文档转换过程中，word转换效果不太理想，可能是格式比较复杂，导致在html中显示效果不太美观。至于excel，pdf，ppt感觉适中，excel可能好一些，毕竟类似于表单形式。pdf和ppt就是图片转换了，原模原样，不过有些图片比较模糊。整体来说可以满足功能的使用，但对于转换效果要求很高的需求来说，POI可能不太适合。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1199,7 +1355,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1212,7 +1368,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
