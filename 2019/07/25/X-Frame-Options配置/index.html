@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="千禧年">
 <meta property="og:description" content="场景服务器没有返回X-Frame-Options响应header，这意味着该网站可能面临clickjacking attack（点击劫持攻击）的风险。 X-Frame-Options HTTP响应头可用于指示是否应允许浏览器在框架或iframe内呈现页面。 点击劫持，clickjacking，也被称为UI-覆盖攻击。它是通过覆盖不可见的框架误导受害者点击。虽然受害者点击的是他所看到的网页，但其实他">
 <meta property="og:locale" content="JAVA">
-<meta property="og:updated_time" content="2019-09-03T07:42:09.923Z">
+<meta property="og:updated_time" content="2019-09-04T01:34:13.891Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="X-Frame-Options配置">
 <meta name="twitter:description" content="场景服务器没有返回X-Frame-Options响应header，这意味着该网站可能面临clickjacking attack（点击劫持攻击）的风险。 X-Frame-Options HTTP响应头可用于指示是否应允许浏览器在框架或iframe内呈现页面。 点击劫持，clickjacking，也被称为UI-覆盖攻击。它是通过覆盖不可见的框架误导受害者点击。虽然受害者点击的是他所看到的网页，但其实他">
@@ -301,7 +301,7 @@
 
       
         <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>服务器没有返回X-Frame-Options响应header，这意味着该网站可能面临clickjacking attack（点击劫持攻击）的风险。 X-Frame-Options HTTP响应头可用于指示是否应允许浏览器在框架或iframe内呈现页面。</p>
-<p>点击劫持，clickjacking，也被称为UI-覆盖攻击。它是通过覆盖不可见的框架误导受害者点击。虽然受害者点击的是他所看到的网页，但其实他所点击的是被黑客精心构建的另一个置于原网页上面的透明页面。这种攻击利用了HTML中<iframe>等标签的透明属性。</iframe></p>
+<p>点击劫持，clickjacking，也被称为UI-覆盖攻击。它是通过覆盖不可见的框架误导受害者点击。虽然受害者点击的是他所看到的网页，但其实他所点击的是被黑客精心构建的另一个置于原网页上面的透明页面。这种攻击利用了HTML中 iframe 等标签的透明属性。</p>
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><hr>
 <ol>
 <li><p>在web.xml中，找到一下代码，取消注释。如果没有，则在web-app标签内，找一空白地方添加。</p>
