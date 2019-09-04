@@ -1164,6 +1164,443 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2018/09/11/PDF转Html-POI系列(三)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="千禧年">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="千禧年">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/11/PDF转Html-POI系列(三)/" itemprop="url">PDF转Html-POI系列(三)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-11T19:23:00+08:00">
+                2018-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>实现PDF文档在线预览</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li><p>引入pdfbox.jar包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;pdfbox&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><ol>
+<li><p>PDF转HTML主方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 将PDF转换为Html</span><br><span class="line">* @param pdfFileDir : PDF文件路径</span><br><span class="line">* @param outDir : 输出文件夹</span><br><span class="line">* @return 返回包含有Html和image的文件夹路径</span><br><span class="line">*/</span><br><span class="line">public static String conveterPDF2Html(String pdfFileDir, String outDir) &#123;</span><br><span class="line">    String htmlDir = &quot;&quot;;</span><br><span class="line">    String uuid = &quot;&quot;;</span><br><span class="line">    //获取源文件</span><br><span class="line">    File pdfFile = new File(pdfFileDir);</span><br><span class="line">    if (pdfFile.exists()) &#123;</span><br><span class="line">        //判断是否指定输出文件夹位置</span><br><span class="line">        if (&quot;&quot;.equals(outDir)) &#123;</span><br><span class="line">            uuid = UUID.randomUUID().toString().replace(&quot;-&quot;, &quot;&quot;);</span><br><span class="line">            htmlDir = pdfFile.getParentFile().getAbsolutePath() + File.separator + uuid + File.separator;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            uuid = new File(outDir).getName();</span><br><span class="line">            htmlDir = outDir + File.separator + uuid + File.separator;</span><br><span class="line">        &#125;</span><br><span class="line">        //创建输出文件夹</span><br><span class="line">        new File(htmlDir).mkdir();</span><br><span class="line">        //将PDF中的图片取出来</span><br><span class="line">        List&lt;String&gt; imageList = conveterPDF2Image(pdfFile, htmlDir);</span><br><span class="line">        //创建Html，把图片贴进去</span><br><span class="line">        createHtml(imageList, htmlDir + uuid + &quot;.html&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return htmlDir;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>PDF图片转换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 将PDF转换为图片</span><br><span class="line">* @param pdfFile : PDF文件</span><br><span class="line">* @param destDir : 输出路径</span><br><span class="line">* @return 图片路径列表</span><br><span class="line">*/</span><br><span class="line">private static List&lt;String&gt; conveterPDF2Image(File pdfFile, String destDir) &#123;</span><br><span class="line"></span><br><span class="line">    List&lt;String&gt; imageList = new ArrayList&lt;String&gt;();</span><br><span class="line">    PDDocument document = null;</span><br><span class="line">    try &#123;</span><br><span class="line">        destDir = destDir+&quot;/image/&quot;;</span><br><span class="line">        File destFile = new File(destDir);</span><br><span class="line">        if (!destFile.exists()) &#123;</span><br><span class="line">        	destFile.mkdir();</span><br><span class="line">        &#125;</span><br><span class="line">        document = PDDocument.load(pdfFile.getAbsolutePath());</span><br><span class="line">        List&lt;PDPage&gt; list = document.getDocumentCatalog().getAllPages();</span><br><span class="line">        int pageNumber = 1;</span><br><span class="line">        for (PDPage page : list) &#123;</span><br><span class="line">            BufferedImage image = page.convertToImage();</span><br><span class="line">            File outputfile = new File(destDir + &quot;_&quot; + pageNumber + &quot;.png&quot;);</span><br><span class="line">            ImageIO.write(image, &quot;png&quot;, outputfile);</span><br><span class="line">            imageList.add(destDir + &quot;_&quot; + pageNumber + &quot;.png&quot;);</span><br><span class="line">            pageNumber++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">    	e.printStackTrace();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            if (document != null)</span><br><span class="line">            	document.close();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return imageList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成Html方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 生成Html文件</span><br><span class="line">* @param imageList : 图片路径列表</span><br><span class="line">* @param htmlFileDir : Html文件路径</span><br><span class="line">*/</span><br><span class="line">private static void createHtml(List&lt;String&gt; imageList, String htmlFileDir) &#123;</span><br><span class="line">    if (imageList.size() &gt; 0) &#123;</span><br><span class="line">        StringBuffer html = new StringBuffer();</span><br><span class="line">        html.append(&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//W3C//DTD HTML 4.01 Transitional//EN\&quot; \&quot;http://www.w3.org/TR/html4/loose.dtd\&quot;&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        html.append(&quot;&lt;html&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        html.append(&quot;&lt;head&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        //html.append(&quot;&lt;title&gt;&quot;).append(fileName).append(&quot;&lt;title&gt;&quot;);</span><br><span class="line">        html.append(&quot;&lt;meta http-equiv=\&quot;content-type\&quot; content=\&quot;text/html;charset=&quot; + _content_charset + &quot;\&quot;/&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        html.append(&quot;&lt;/head&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        html.append(&quot;&lt;body style=\&quot;text-align: center;margin:auto;width:1000px;\&quot;&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        for (String imageDir : imageList) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                File imageFile = new File(imageDir);</span><br><span class="line">                BufferedImage imd = ImageIO.read(imageFile);</span><br><span class="line">                String imageName = imageFile.getName();</span><br><span class="line">                int heigth = imd.getHeight();</span><br><span class="line">                int width = imd.getWidth();</span><br><span class="line">                if (width &gt; 1000) &#123;</span><br><span class="line">                    int scale = width / 1000;</span><br><span class="line">                    width = 1000;</span><br><span class="line">                    heigth = heigth / scale;</span><br><span class="line">                &#125;</span><br><span class="line">                html.append(&quot;&lt;img src=&apos;&quot; + &quot;image\\&quot;+imageName + &quot;&apos; width=&apos;&quot; + width + &quot;px&apos; height=&apos;&quot; + heigth + &quot;px&apos; border=&apos;0&apos;/&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">            	e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        html.append(&quot;&lt;/body&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        html.append(&quot;&lt;/html&gt;&quot;);</span><br><span class="line">        FileOutputStream out = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            out = new FileOutputStream(htmlFileDir);</span><br><span class="line">            out.write(html.toString().getBytes(_content_charset));</span><br><span class="line">            out.flush();</span><br><span class="line">        &#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">        	e.printStackTrace();</span><br><span class="line">        &#125; catch (UnsupportedEncodingException e) &#123;</span><br><span class="line">        	e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">        	e.printStackTrace();</span><br><span class="line">        &#125;finally &#123;</span><br><span class="line">            if (out != null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                	out.close();</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>就是把每页保存成图片，然后 image src贴到html上。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2018/09/10/Excel转Html-POI系列(二)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="千禧年">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="千禧年">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/10/Excel转Html-POI系列(二)/" itemprop="url">Excel转Html-POI系列(二)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-10T20:08:00+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>实现xls和xlsx文档在线预览</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li>Excel转Html分两种<ol>
+<li>xls格式转Html</li>
+<li>xlsx格式转Html</li>
+<li>注意Excel转Html方法比较多，大部分是格式或颜色处理，下包包含所有方法</li>
+</ol>
+</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><ol>
+<li><p>代码自动区分xls和xlsx格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* Excel转Html</span><br><span class="line">* @param SourcePath excel文件地址</span><br><span class="line">* @param targetPath html文件输出地址</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">public static String excelToHtml(String SourcePath,String targetPath) &#123;</span><br><span class="line">    long startTime = System.currentTimeMillis(); //开始时间</span><br><span class="line">    InputStream is = null;</span><br><span class="line">    String htmlExcel = null;</span><br><span class="line">	try &#123;</span><br><span class="line">        //获取源文件</span><br><span class="line">        File sourcefile = new File(SourcePath);</span><br><span class="line">        is = new FileInputStream(sourcefile);</span><br><span class="line">        //初始化工作本</span><br><span class="line">        Workbook wb = WorkbookFactory.create(is);</span><br><span class="line">        //判断类型</span><br><span class="line">    if (wb instanceof XSSFWorkbook) &#123;</span><br><span class="line">        //xlsx对应XSSFWorkbook</span><br><span class="line">        XSSFWorkbook xWb = (XSSFWorkbook) wb;</span><br><span class="line">        //获取转换后Html的内容</span><br><span class="line">        htmlExcel = ExcelToHtml.getExcelInfo(xWb, true);</span><br><span class="line">        FileUtils.writeFile(htmlExcel, targetPath);</span><br><span class="line">    &#125; else if (wb instanceof HSSFWorkbook) &#123;</span><br><span class="line">        //xls对应HSSFWorkbook</span><br><span class="line">        HSSFWorkbook hWb = (HSSFWorkbook) wb;</span><br><span class="line">        //获取转换后Html的内容</span><br><span class="line">        htmlExcel = ExcelToHtml.getExcelInfo(hWb, true);</span><br><span class="line">        FileUtils.writeFile(htmlExcel, targetPath);</span><br><span class="line">    &#125;</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">    	e.printStackTrace();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">        	is.close();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">        	e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(&quot;Excel表格转换时间&quot; + (System.currentTimeMillis() - startTime) + &quot; ms.&quot;); //结束时间</span><br><span class="line">    return htmlExcel;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>核心代码，生成Html内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">*</span><br><span class="line">* @param wb Excel对象</span><br><span class="line">* @param isWithStyle 是否设置样式(默认true)</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">private static String getExcelInfo(Workbook wb, boolean isWithStyle) &#123;</span><br><span class="line">    StringBuffer sb = new StringBuffer();</span><br><span class="line">    int sheetCounts = wb.getNumberOfSheets();</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; sheetCounts; i++) &#123;</span><br><span class="line">        // 获取Sheet页面内容</span><br><span class="line">        Sheet sheet = wb.getSheetAt(i);</span><br><span class="line">        //当前Sheet总行数</span><br><span class="line">        int lastRowNum = sheet.getLastRowNum();</span><br><span class="line">        Map&lt;String, String&gt; map[] = getRowSpanColSpanMap(sheet);</span><br><span class="line">        sb.append(&quot;&lt;br&gt;&lt;br&gt;&quot;);</span><br><span class="line">        sb.append(sheet.getSheetName());</span><br><span class="line">        sb.append(&quot;&lt;table style=&apos;border-collapse:collapse;&apos; width=&apos;100%&apos;&gt;&quot;);</span><br><span class="line">        Row row = null; // 兼容</span><br><span class="line">        Cell cell = null; // 兼容</span><br><span class="line">        //循环所有行</span><br><span class="line">        for (int rowNum = sheet.getFirstRowNum(); rowNum &lt;= lastRowNum; rowNum++) &#123;</span><br><span class="line">            //row当前Excel行内容</span><br><span class="line">            row = sheet.getRow(rowNum);</span><br><span class="line">            if (row == null) &#123;</span><br><span class="line">                sb.append(&quot;&lt;tr&gt;&lt;td &gt; &amp;nbsp;&lt;/td&gt;&lt;/tr&gt;&quot;);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            sb.append(&quot;&lt;tr&gt;&quot;);</span><br><span class="line">            //获取该行所有列数</span><br><span class="line">            int lastColNum = row.getLastCellNum();</span><br><span class="line">            for (int colNum = 0; colNum &lt; lastColNum; colNum++) &#123;</span><br><span class="line">                //获取当前单元格</span><br><span class="line">                cell = row.getCell(colNum);</span><br><span class="line">                // 特殊情况 空白的单元格会返回null</span><br><span class="line">                if (cell == null) &#123;</span><br><span class="line">                    sb.append(&quot;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&quot;);</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line">                //stringValue=当前单元格内容</span><br><span class="line">                String stringValue = getCellValue(cell);</span><br><span class="line">                //根据获取的Excel位置，设置表单部分样式</span><br><span class="line">                if (map[0].containsKey(rowNum + &quot;,&quot; + colNum)) &#123;</span><br><span class="line">                    String pointString = map[0].get(rowNum + &quot;,&quot; + colNum);</span><br><span class="line">                    map[0].remove(rowNum + &quot;,&quot; + colNum);</span><br><span class="line">                    int bottomeRow = Integer.valueOf(pointString.split(&quot;,&quot;)[0]);</span><br><span class="line">                    int bottomeCol = Integer.valueOf(pointString.split(&quot;,&quot;)[1]);</span><br><span class="line">                    int rowSpan = bottomeRow - rowNum + 1;</span><br><span class="line">                    int colSpan = bottomeCol - colNum + 1;</span><br><span class="line">                    sb.append(&quot;&lt;td rowspan= &apos;&quot; + rowSpan + &quot;&apos; colspan= &apos;&quot; + colSpan + &quot;&apos; &quot;);</span><br><span class="line">                &#125; else if (map[1].containsKey(rowNum + &quot;,&quot; + colNum)) &#123;</span><br><span class="line">                    map[1].remove(rowNum + &quot;,&quot; + colNum);</span><br><span class="line">                    continue;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                	sb.append(&quot;&lt;td &quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                // 判断是否需要样式</span><br><span class="line">                if (isWithStyle) &#123;</span><br><span class="line">                    // 处理单元格样式</span><br><span class="line">                    dealExcelStyle(wb, sheet, cell, sb);</span><br><span class="line">                &#125;</span><br><span class="line">                sb.append(&quot;&gt;&quot;);</span><br><span class="line">                if (stringValue == null || &quot;&quot;.equals(stringValue.trim())) &#123;</span><br><span class="line">                	sb.append(&quot; &amp;nbsp; &quot;);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    // 将ascii码为160的空格转换为html下的空格（&amp;nbsp;）</span><br><span class="line">                    sb.append(stringValue.replace(String.valueOf((char) 160), &quot;&amp;nbsp;&quot;));</span><br><span class="line">                &#125;</span><br><span class="line">                sb.append(&quot;&lt;/td&gt;&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            sb.append(&quot;&lt;/tr&gt;&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        sb.append(&quot;&lt;/table&gt;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return sb.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>合并单元格的判断处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 获取单元格长度宽度(用于一些合并单元格，方便设置页面格式)</span><br><span class="line">* @param sheet</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">private static Map&lt;String, String&gt;[] getRowSpanColSpanMap(Sheet sheet) &#123;</span><br><span class="line">    Map&lt;String, String&gt; map0 = new HashMap&lt;String, String&gt;();</span><br><span class="line">    Map&lt;String, String&gt; map1 = new HashMap&lt;String, String&gt;();</span><br><span class="line">    int mergedNum = sheet.getNumMergedRegions();</span><br><span class="line">    CellRangeAddress range = null;</span><br><span class="line">    for (int i = 0; i &lt; mergedNum; i++) &#123;</span><br><span class="line">        range = sheet.getMergedRegion(i);</span><br><span class="line">        int topRow = range.getFirstRow();</span><br><span class="line">        int topCol = range.getFirstColumn();</span><br><span class="line">        int bottomRow = range.getLastRow();</span><br><span class="line">        int bottomCol = range.getLastColumn();</span><br><span class="line">        map0.put(topRow + &quot;,&quot; + topCol, bottomRow + &quot;,&quot; + bottomCol);</span><br><span class="line">        // System.out.println(topRow + &quot;,&quot; + topCol + &quot;,&quot; + bottomRow + &quot;,&quot;</span><br><span class="line">        // + bottomCol);</span><br><span class="line">        int tempRow = topRow;</span><br><span class="line">        while (tempRow &lt;= bottomRow) &#123;</span><br><span class="line">        	int tempCol = topCol;</span><br><span class="line">            while (tempCol &lt;= bottomCol) &#123;</span><br><span class="line">                map1.put(tempRow + &quot;,&quot; + tempCol, &quot;&quot;);</span><br><span class="line">                tempCol++;</span><br><span class="line">            &#125;</span><br><span class="line">            tempRow++;</span><br><span class="line">        &#125;</span><br><span class="line">        map1.remove(topRow + &quot;,&quot; + topCol);</span><br><span class="line">    &#125;</span><br><span class="line">    Map[] map = &#123; map0, map1 &#125;;</span><br><span class="line">    return map;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取单元格内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 200 * 获取表格单元格Cell内容 201 * @param cell 202 * @return 203</span><br><span class="line">*/</span><br><span class="line">private static String getCellValue(Cell cell) &#123;</span><br><span class="line"></span><br><span class="line">    String result = new String();</span><br><span class="line">    switch (cell.getCellType()) &#123;</span><br><span class="line">        case Cell.CELL_TYPE_NUMERIC:// 数字类型</span><br><span class="line">        if (HSSFDateUtil.isCellDateFormatted(cell)) &#123;// 处理日期格式、时间格式</span><br><span class="line">            SimpleDateFormat sdf = null;</span><br><span class="line">            if (cell.getCellStyle().getDataFormat() == HSSFDataFormat.getBuiltinFormat(&quot;h:mm&quot;)) &#123;</span><br><span class="line">            	sdf = new SimpleDateFormat(&quot;HH:mm&quot;);</span><br><span class="line">            &#125; else &#123;// 日期</span><br><span class="line">            	sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            Date date = cell.getDateCellValue();</span><br><span class="line">            result = sdf.format(date);</span><br><span class="line">        &#125; else if (cell.getCellStyle().getDataFormat() == 58) &#123;</span><br><span class="line">            // 处理自定义日期格式：m月d日(通过判断单元格的格式id解决，id的值是58)</span><br><span class="line">            SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span><br><span class="line">            double value = cell.getNumericCellValue();</span><br><span class="line">            Date date = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(value);</span><br><span class="line">            result = sdf.format(date);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            double value = cell.getNumericCellValue();</span><br><span class="line">            CellStyle style = cell.getCellStyle();</span><br><span class="line">            DecimalFormat format = new DecimalFormat();</span><br><span class="line">            String temp = style.getDataFormatString();</span><br><span class="line">            // 单元格设置成常规</span><br><span class="line">            if (temp.equals(&quot;General&quot;)) &#123;</span><br><span class="line">            	format.applyPattern(&quot;#&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            result = format.format(value);</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line">        case Cell.CELL_TYPE_STRING:// String类型</span><br><span class="line">        result = cell.getRichStringCellValue().toString();</span><br><span class="line">        break;</span><br><span class="line">        case Cell.CELL_TYPE_BLANK:</span><br><span class="line">        result = &quot;&quot;;</span><br><span class="line">        break;</span><br><span class="line">        default:</span><br><span class="line">        result = &quot;&quot;;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>处理表格样式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 251 * 处理表格样式 252 * @param wb 253 * @param sheet 254 * @param cell 255</span><br><span class="line">* * @param sb 256</span><br><span class="line">*/</span><br><span class="line">private static void dealExcelStyle(Workbook wb, Sheet sheet, Cell cell, StringBuffer sb) &#123;</span><br><span class="line">    CellStyle cellStyle = cell.getCellStyle();</span><br><span class="line">    if (cellStyle != null) &#123;</span><br><span class="line">        short alignment = cellStyle.getAlignment();</span><br><span class="line">        // 单元格内容的水平对齐方式</span><br><span class="line">        sb.append(&quot;align=&apos;&quot; + convertAlignToHtml(alignment) + &quot;&apos; &quot;);</span><br><span class="line">        short verticalAlignment = cellStyle.getVerticalAlignment();</span><br><span class="line">        // 单元格中内容的垂直排列方式</span><br><span class="line">        sb.append(&quot;valign=&apos;&quot; + convertVerticalAlignToHtml(verticalAlignment) + &quot;&apos; &quot;);</span><br><span class="line"></span><br><span class="line">        if (wb instanceof XSSFWorkbook) &#123;</span><br><span class="line">            XSSFFont xf = ((XSSFCellStyle) cellStyle).getFont();</span><br><span class="line">            short boldWeight = xf.getBoldweight();</span><br><span class="line">            sb.append(&quot;style=&apos;&quot;);</span><br><span class="line">            sb.append(&quot;font-weight:&quot; + boldWeight + &quot;;&quot;); // 字体加粗</span><br><span class="line">            sb.append(&quot;font-size: &quot; + xf.getFontHeight() / 2 + &quot;%;&quot;); // 字体大小</span><br><span class="line">            int columnWidth = sheet.getColumnWidth(cell.getColumnIndex());</span><br><span class="line">            sb.append(&quot;width:&quot; + columnWidth + &quot;px;&quot;);</span><br><span class="line">            XSSFColor xc = xf.getXSSFColor();</span><br><span class="line">            if (xc != null &amp;&amp; !&quot;&quot;.equals(xc)) &#123;</span><br><span class="line">                sb.append(&quot;color:#&quot; + xc.getARGBHex().substring(2) + &quot;;&quot;); // 字体颜色</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            XSSFColor bgColor = (XSSFColor) cellStyle.getFillForegroundColorColor();</span><br><span class="line">            if (bgColor != null &amp;&amp; !&quot;&quot;.equals(bgColor)) &#123;</span><br><span class="line">                sb.append(&quot;background-color:#&quot; + bgColor.getARGBHex().substring(2) + &quot;;&quot;); 	// 背景颜色</span><br><span class="line">            &#125;</span><br><span class="line">            sb.append(getBorderStyle(0, cellStyle.getBorderTop(),</span><br><span class="line">            ((XSSFCellStyle) cellStyle).getTopBorderXSSFColor()));</span><br><span class="line">            sb.append(getBorderStyle(1, cellStyle.getBorderRight(),</span><br><span class="line">            ((XSSFCellStyle) cellStyle).getRightBorderXSSFColor()));</span><br><span class="line">            sb.append(getBorderStyle(2, cellStyle.getBorderBottom(),</span><br><span class="line">            ((XSSFCellStyle) cellStyle).getBottomBorderXSSFColor()));</span><br><span class="line">            sb.append(getBorderStyle(3, cellStyle.getBorderLeft(),</span><br><span class="line">            ((XSSFCellStyle) cellStyle).getLeftBorderXSSFColor()));</span><br><span class="line">        &#125; else if (wb instanceof HSSFWorkbook) &#123;</span><br><span class="line">            HSSFFont hf = ((HSSFCellStyle) cellStyle).getFont(wb);</span><br><span class="line">            short boldWeight = hf.getBoldweight();</span><br><span class="line">            short fontColor = hf.getColor();</span><br><span class="line">            sb.append(&quot;style=&apos;&quot;);</span><br><span class="line">            HSSFPalette palette = ((HSSFWorkbook) wb).getCustomPalette(); // 类HSSFPalette用于求的颜色的国际标准形式</span><br><span class="line">            HSSFColor hc = palette.getColor(fontColor);</span><br><span class="line">            sb.append(&quot;font-weight:&quot; + boldWeight + &quot;;&quot;); // 字体加粗</span><br><span class="line">            sb.append(&quot;font-size: &quot; + hf.getFontHeight() / 2 + &quot;%;&quot;); // 字体大小</span><br><span class="line">            String fontColorStr = convertToStardColor(hc);</span><br><span class="line">            if (fontColorStr != null &amp;&amp; !&quot;&quot;.equals(fontColorStr.trim())) &#123;</span><br><span class="line">            	sb.append(&quot;color:&quot; + fontColorStr + &quot;;&quot;); // 字体颜色</span><br><span class="line">            &#125;</span><br><span class="line">            int columnWidth = sheet.getColumnWidth(cell.getColumnIndex());</span><br><span class="line">            sb.append(&quot;width:&quot; + columnWidth + &quot;px;&quot;);</span><br><span class="line">            short bgColor = cellStyle.getFillForegroundColor();</span><br><span class="line">            hc = palette.getColor(bgColor);</span><br><span class="line">            String bgColorStr = convertToStardColor(hc);</span><br><span class="line">            if (bgColorStr != null &amp;&amp; !&quot;&quot;.equals(bgColorStr.trim())) &#123;</span><br><span class="line">            	sb.append(&quot;background-color:&quot; + bgColorStr + &quot;;&quot;); // 背景颜色</span><br><span class="line">            &#125;</span><br><span class="line">            sb.append(getBorderStyle(palette, 0, cellStyle.getBorderTop(), cellStyle.getTopBorderColor()));</span><br><span class="line">            sb.append(getBorderStyle(palette, 1, cellStyle.getBorderRight(), cellStyle.getRightBorderColor()));</span><br><span class="line">            sb.append(getBorderStyle(palette, 3, cellStyle.getBorderLeft(), cellStyle.getLeftBorderColor()));</span><br><span class="line">            sb.append(getBorderStyle(palette, 2, cellStyle.getBorderBottom(), cellStyle.getBottomBorderColor()));</span><br><span class="line">        &#125;</span><br><span class="line">        sb.append(&quot;&apos; &quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>单元格内容展示方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 330 * 单元格内容的水平对齐方式 331 * @param alignment 332 * @return 333</span><br><span class="line">*/</span><br><span class="line">private static String convertAlignToHtml(short alignment) &#123;</span><br><span class="line"></span><br><span class="line">    String align = &quot;left&quot;;</span><br><span class="line">    switch (alignment) &#123;</span><br><span class="line">        case CellStyle.ALIGN_LEFT:</span><br><span class="line">        	align = &quot;left&quot;;</span><br><span class="line">        break;</span><br><span class="line">        case CellStyle.ALIGN_CENTER:</span><br><span class="line">        	align = &quot;center&quot;;</span><br><span class="line">        break;</span><br><span class="line">        case CellStyle.ALIGN_RIGHT:</span><br><span class="line">        	align = &quot;right&quot;;</span><br><span class="line">        break;</span><br><span class="line">        default:</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return align;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* 354 * 单元格中内容的垂直排列方式 355 * @param verticalAlignment 356 * @return 357</span><br><span class="line">*/</span><br><span class="line">private static String convertVerticalAlignToHtml(short verticalAlignment) &#123;</span><br><span class="line">    String valign = &quot;middle&quot;;</span><br><span class="line">    switch (verticalAlignment) &#123;</span><br><span class="line">    	case CellStyle.VERTICAL_BOTTOM:</span><br><span class="line">    		valign = &quot;bottom&quot;;</span><br><span class="line">        break;</span><br><span class="line">        case CellStyle.VERTICAL_CENTER:</span><br><span class="line">            valign = &quot;center&quot;;</span><br><span class="line">        break;</span><br><span class="line">        case CellStyle.VERTICAL_TOP:</span><br><span class="line">            valign = &quot;top&quot;;</span><br><span class="line">        break;</span><br><span class="line">        default:</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return valign;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>表格颜色处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 处理表格颜色</span><br><span class="line">* @param hc</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">private static String convertToStardColor(HSSFColor hc) &#123;</span><br><span class="line">    StringBuffer sb = new StringBuffer(&quot;&quot;);</span><br><span class="line">    if (hc != null) &#123;</span><br><span class="line">        if (HSSFColor.AUTOMATIC.index == hc.getIndex()) &#123;</span><br><span class="line">        	return null;</span><br><span class="line">        &#125;</span><br><span class="line">        sb.append(&quot;#&quot;);</span><br><span class="line">        for (int i = 0; i &lt; hc.getTriplet().length; i++) &#123;</span><br><span class="line">        	sb.append(fillWithZero(Integer.toHexString(hc.getTriplet()[i])));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return sb.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>剩下一些格式处理方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">private static String fillWithZero(String str) &#123;</span><br><span class="line">    if (str != null &amp;&amp; str.length() &lt; 2) &#123;</span><br><span class="line">    	return &quot;0&quot; + str;</span><br><span class="line">    &#125;</span><br><span class="line">    return str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static String[] bordesr = &#123; &quot;border-top:&quot;, &quot;border-right:&quot;, &quot;border-bottom:&quot;, &quot;border-left:&quot; &#125;;</span><br><span class="line">static String[] borderStyles = &#123; &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;,</span><br><span class="line">&quot;solid &quot;, &quot;solid&quot;, &quot;solid&quot;, &quot;solid&quot;, &quot;solid&quot;, &quot;solid&quot; &#125;;</span><br><span class="line"></span><br><span class="line">private static String getBorderStyle(HSSFPalette palette, int b, short s, short t) &#123;</span><br><span class="line"></span><br><span class="line">    if (s == 0)</span><br><span class="line">    	return bordesr[b] + borderStyles[s] + &quot;#d0d7e5 1px;&quot;;</span><br><span class="line">    String borderColorStr = convertToStardColor(palette.getColor(t));</span><br><span class="line">    borderColorStr = borderColorStr == null || borderColorStr.length() &lt; 1 ? &quot;#000000&quot; : borderColorStr;</span><br><span class="line">    return bordesr[b] + borderStyles[s] + borderColorStr + &quot; 1px;&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static String getBorderStyle(int b, short s, XSSFColor xc) &#123;</span><br><span class="line">    if (s == 0)</span><br><span class="line">    	return bordesr[b] + borderStyles[s] + &quot;#d0d7e5 1px;&quot;;</span><br><span class="line">    if (xc != null &amp;&amp; !&quot;&quot;.equals(xc)) &#123;</span><br><span class="line">        String borderColorStr = xc.getARGBHex();// t.getARGBHex();</span><br><span class="line">        borderColorStr = borderColorStr == null || borderColorStr.length() &lt; 1 ? &quot;#000000&quot;</span><br><span class="line">        : borderColorStr.substring(2);</span><br><span class="line">    	return bordesr[b] + borderStyles[s] + borderColorStr + &quot; 1px;&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	return &quot;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>代码这块是从印象笔记中复制过去的，格式有点乱….不过印象笔记上的更乱….后面部分代码是当时写demo的时候从网上摘下来的，所以后面几个方法没有debug过，只跟了前面逻辑，可以正常跑通。</li>
+</ol>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2018/09/10/PPT转Html-POI系列(四)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="千禧年">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="千禧年">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/10/PPT转Html-POI系列(四)/" itemprop="url">PPT转Html-POI系列(四)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-10T10:31:00+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>实现ppt和pptx文档在线预览</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><ol>
+<li><p>PPT转Html，分为两种方式</p>
+<ol>
+<li>ppt格式转html</li>
+<li>pptx格式转html</li>
+</ol>
+</li>
+<li><p>ppt格式转html，核心点在于SlideShow类，获取PPT对象</p>
+<p>然后通过Graphics2D类绘图</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* PPT转Html</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> sourcePath ppt文件地址</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> targetDir html输出文件地址</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">doPPTtoImage</span><span class="params">(String sourcePath, String targetDir)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//字符串用于拼接和修改Html内容</span></span><br><span class="line">    StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">    String html = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//获取文件流</span></span><br><span class="line">        FileInputStream is = <span class="keyword">new</span> FileInputStream(sourcePath);</span><br><span class="line">        <span class="comment">//PPT对象获取文件</span></span><br><span class="line">        SlideShow ppt = <span class="keyword">new</span> SlideShow(is);</span><br><span class="line">        is.close();</span><br><span class="line">        <span class="comment">//创建根文件夹(用来保存PPT图片和转换后的Html),createPPT:要创建的文件夹路径</span></span><br><span class="line">        String pptName = sourcePath.substring(sourcePath.lastIndexOf(<span class="string">"\\"</span>)+<span class="number">1</span>,sourcePath.lastIndexOf(<span class="string">"."</span>));</span><br><span class="line">        String createPPT = targetDir+pptName;</span><br><span class="line">        FileUtils.createDir(createPPT);</span><br><span class="line">        <span class="comment">//创建图片文件夹</span></span><br><span class="line">        String imagePPT = createPPT+<span class="string">"\\image\\"</span>;</span><br><span class="line">        FileUtils.createDir(imagePPT);</span><br><span class="line">        <span class="comment">//获取PPT页数</span></span><br><span class="line">        Dimension pgsize = ppt.getPageSize();</span><br><span class="line">        <span class="comment">//获取所有PPT页面</span></span><br><span class="line">        org.apache.poi.hslf.model.Slide[] slide = ppt.getSlides();</span><br><span class="line">        <span class="comment">//循环将PPT页面转成图片，并生成Html内容</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; slide.length; i++) &#123;</span><br><span class="line">            TextRun[] truns = slide[i].getTextRuns();</span><br><span class="line">            <span class="keyword">for</span> ( <span class="keyword">int</span> k=<span class="number">0</span>;k&lt;truns.length;k++)&#123;</span><br><span class="line">                RichTextRun[] rtruns = truns[k].getRichTextRuns();</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> l=<span class="number">0</span>;l&lt;rtruns.length;l++)&#123;</span><br><span class="line">                    rtruns[l].setFontIndex(<span class="number">1</span>);</span><br><span class="line">                    rtruns[l].setFontName(<span class="string">"宋体"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//设置输出图片的格式参数</span></span><br><span class="line">            BufferedImage img = <span class="keyword">new</span> BufferedImage(pgsize.width,pgsize.height, BufferedImage.TYPE_INT_RGB);</span><br><span class="line">            <span class="comment">//绘图</span></span><br><span class="line">            Graphics2D graphics = img.createGraphics();</span><br><span class="line">            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,</span><br><span class="line">            RenderingHints.VALUE_ANTIALIAS_ON);</span><br><span class="line">            graphics.setRenderingHint(RenderingHints.KEY_RENDERING,</span><br><span class="line">            RenderingHints.VALUE_RENDER_QUALITY);</span><br><span class="line">            graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,</span><br><span class="line">            RenderingHints.VALUE_INTERPOLATION_BICUBIC);</span><br><span class="line">            graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,</span><br><span class="line">            RenderingHints.VALUE_FRACTIONALMETRICS_ON);</span><br><span class="line">            graphics.setPaint(Color.BLUE);</span><br><span class="line">            graphics.setPaint(Color.BLUE);</span><br><span class="line">            graphics.fill(<span class="keyword">new</span> Rectangle2D.Float(<span class="number">0</span>, <span class="number">0</span>, pgsize.width, pgsize.height));</span><br><span class="line">            <span class="comment">//渲染</span></span><br><span class="line">            slide[i].draw(graphics);</span><br><span class="line">            <span class="comment">//这里设置图片的存放路径和图片的格式</span></span><br><span class="line">            String imageName = <span class="string">"ppt_"</span>+(i+<span class="number">1</span>)+<span class="string">".png"</span>;</span><br><span class="line">            String imagePath = imagePPT+imageName;</span><br><span class="line">            <span class="comment">//图片存放位置</span></span><br><span class="line">            FileOutputStream out = <span class="keyword">new</span> FileOutputStream(imagePath);</span><br><span class="line">            <span class="comment">//图片输出</span></span><br><span class="line">            javax.imageio.ImageIO.write(img, <span class="string">"jpeg"</span>, out);</span><br><span class="line">            out.close();</span><br><span class="line">            <span class="comment">//填充Html内容</span></span><br><span class="line">            sb.append(<span class="string">"&lt;br&gt;"</span>);</span><br><span class="line">            sb.append(<span class="string">"&lt;img style=\"margin-top:17px;\" src=\"image\\"</span>+imageName+<span class="string">"\"&gt;"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"success!!"</span>);</span><br><span class="line">        <span class="comment">//拼接Html内容</span></span><br><span class="line">        html = <span class="string">"&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body style=\"background-color:#FFF;\"&gt;&lt;div style=\"text-align:center;margin-top:20px;\"&gt;"</span>+sb.toString()+<span class="string">"&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;"</span>;</span><br><span class="line">        FileUtils.writeFile(html,createPPT+<span class="string">"\\"</span>+pptName+<span class="string">".html"</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    	e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>PPT转Html和PDF很相似，都是通过保存成图片，然后贴到html上面的，不过pdf用了pdfbox.jar包，而PPT用的是java自带Graphics2D绘制而成的。不同的地方在于，pdf保存成的图片比较清晰，ppt保存成的图片有些样式或者ppt里面的图片，比较模糊</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2018/09/10/Word转Html-POI系列(一)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1355,7 +1792,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

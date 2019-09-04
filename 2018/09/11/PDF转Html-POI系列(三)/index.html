@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="JAVA">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java||POI,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景实现PDF文档在线预览 准备 引入pdfbox.jar包 12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;org.apache&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;pdfbox&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;gt;1.0&amp;lt;/version&amp;gt;&amp;lt;/dependency&amp;">
+<meta name="keywords" content="Java||POI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PDF转Html-POI系列(三)">
+<meta property="og:url" content="http://qianxinian.top/2018/09/11/PDF转Html-POI系列(三)/index.html">
+<meta property="og:site_name" content="千禧年">
+<meta property="og:description" content="背景实现PDF文档在线预览 准备 引入pdfbox.jar包 12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;org.apache&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;pdfbox&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;gt;1.0&amp;lt;/version&amp;gt;&amp;lt;/dependency&amp;">
+<meta property="og:locale" content="JAVA">
+<meta property="og:updated_time" content="2019-09-04T06:08:45.863Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PDF转Html-POI系列(三)">
+<meta name="twitter:description" content="背景实现PDF文档在线预览 准备 引入pdfbox.jar包 12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;org.apache&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;pdfbox&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;gt;1.0&amp;lt;/version&amp;gt;&amp;lt;/dependency&amp;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":14,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://qianxinian.top/2018/09/11/PDF转Html-POI系列(三)/">
+
+
+
+
+
+  <title>PDF转Html-POI系列(三) | 千禧年</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="JAVA">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">千禧年</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">JAVA</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2018/09/11/PDF转Html-POI系列(三)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="千禧年">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="千禧年">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PDF转Html-POI系列(三)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-11T19:23:00+08:00">
+                2018-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>实现PDF文档在线预览</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li><p>引入pdfbox.jar包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;pdfbox&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><ol>
+<li><p>PDF转HTML主方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 将PDF转换为Html</span><br><span class="line">* @param pdfFileDir : PDF文件路径</span><br><span class="line">* @param outDir : 输出文件夹</span><br><span class="line">* @return 返回包含有Html和image的文件夹路径</span><br><span class="line">*/</span><br><span class="line">public static String conveterPDF2Html(String pdfFileDir, String outDir) &#123;</span><br><span class="line">    String htmlDir = &quot;&quot;;</span><br><span class="line">    String uuid = &quot;&quot;;</span><br><span class="line">    //获取源文件</span><br><span class="line">    File pdfFile = new File(pdfFileDir);</span><br><span class="line">    if (pdfFile.exists()) &#123;</span><br><span class="line">        //判断是否指定输出文件夹位置</span><br><span class="line">        if (&quot;&quot;.equals(outDir)) &#123;</span><br><span class="line">            uuid = UUID.randomUUID().toString().replace(&quot;-&quot;, &quot;&quot;);</span><br><span class="line">            htmlDir = pdfFile.getParentFile().getAbsolutePath() + File.separator + uuid + File.separator;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            uuid = new File(outDir).getName();</span><br><span class="line">            htmlDir = outDir + File.separator + uuid + File.separator;</span><br><span class="line">        &#125;</span><br><span class="line">        //创建输出文件夹</span><br><span class="line">        new File(htmlDir).mkdir();</span><br><span class="line">        //将PDF中的图片取出来</span><br><span class="line">        List&lt;String&gt; imageList = conveterPDF2Image(pdfFile, htmlDir);</span><br><span class="line">        //创建Html，把图片贴进去</span><br><span class="line">        createHtml(imageList, htmlDir + uuid + &quot;.html&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return htmlDir;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>PDF图片转换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 将PDF转换为图片</span><br><span class="line">* @param pdfFile : PDF文件</span><br><span class="line">* @param destDir : 输出路径</span><br><span class="line">* @return 图片路径列表</span><br><span class="line">*/</span><br><span class="line">private static List&lt;String&gt; conveterPDF2Image(File pdfFile, String destDir) &#123;</span><br><span class="line"></span><br><span class="line">    List&lt;String&gt; imageList = new ArrayList&lt;String&gt;();</span><br><span class="line">    PDDocument document = null;</span><br><span class="line">    try &#123;</span><br><span class="line">        destDir = destDir+&quot;/image/&quot;;</span><br><span class="line">        File destFile = new File(destDir);</span><br><span class="line">        if (!destFile.exists()) &#123;</span><br><span class="line">        	destFile.mkdir();</span><br><span class="line">        &#125;</span><br><span class="line">        document = PDDocument.load(pdfFile.getAbsolutePath());</span><br><span class="line">        List&lt;PDPage&gt; list = document.getDocumentCatalog().getAllPages();</span><br><span class="line">        int pageNumber = 1;</span><br><span class="line">        for (PDPage page : list) &#123;</span><br><span class="line">            BufferedImage image = page.convertToImage();</span><br><span class="line">            File outputfile = new File(destDir + &quot;_&quot; + pageNumber + &quot;.png&quot;);</span><br><span class="line">            ImageIO.write(image, &quot;png&quot;, outputfile);</span><br><span class="line">            imageList.add(destDir + &quot;_&quot; + pageNumber + &quot;.png&quot;);</span><br><span class="line">            pageNumber++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">    	e.printStackTrace();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            if (document != null)</span><br><span class="line">            	document.close();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return imageList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成Html方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 生成Html文件</span><br><span class="line">* @param imageList : 图片路径列表</span><br><span class="line">* @param htmlFileDir : Html文件路径</span><br><span class="line">*/</span><br><span class="line">private static void createHtml(List&lt;String&gt; imageList, String htmlFileDir) &#123;</span><br><span class="line">    if (imageList.size() &gt; 0) &#123;</span><br><span class="line">        StringBuffer html = new StringBuffer();</span><br><span class="line">        html.append(&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//W3C//DTD HTML 4.01 Transitional//EN\&quot; \&quot;http://www.w3.org/TR/html4/loose.dtd\&quot;&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        html.append(&quot;&lt;html&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        html.append(&quot;&lt;head&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        //html.append(&quot;&lt;title&gt;&quot;).append(fileName).append(&quot;&lt;title&gt;&quot;);</span><br><span class="line">        html.append(&quot;&lt;meta http-equiv=\&quot;content-type\&quot; content=\&quot;text/html;charset=&quot; + _content_charset + &quot;\&quot;/&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        html.append(&quot;&lt;/head&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        html.append(&quot;&lt;body style=\&quot;text-align: center;margin:auto;width:1000px;\&quot;&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        for (String imageDir : imageList) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                File imageFile = new File(imageDir);</span><br><span class="line">                BufferedImage imd = ImageIO.read(imageFile);</span><br><span class="line">                String imageName = imageFile.getName();</span><br><span class="line">                int heigth = imd.getHeight();</span><br><span class="line">                int width = imd.getWidth();</span><br><span class="line">                if (width &gt; 1000) &#123;</span><br><span class="line">                    int scale = width / 1000;</span><br><span class="line">                    width = 1000;</span><br><span class="line">                    heigth = heigth / scale;</span><br><span class="line">                &#125;</span><br><span class="line">                html.append(&quot;&lt;img src=&apos;&quot; + &quot;image\\&quot;+imageName + &quot;&apos; width=&apos;&quot; + width + &quot;px&apos; height=&apos;&quot; + heigth + &quot;px&apos; border=&apos;0&apos;/&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">            	e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        html.append(&quot;&lt;/body&gt;&quot;).append(&quot;\r\n&quot;);</span><br><span class="line">        html.append(&quot;&lt;/html&gt;&quot;);</span><br><span class="line">        FileOutputStream out = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            out = new FileOutputStream(htmlFileDir);</span><br><span class="line">            out.write(html.toString().getBytes(_content_charset));</span><br><span class="line">            out.flush();</span><br><span class="line">        &#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">        	e.printStackTrace();</span><br><span class="line">        &#125; catch (UnsupportedEncodingException e) &#123;</span><br><span class="line">        	e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">        	e.printStackTrace();</span><br><span class="line">        &#125;finally &#123;</span><br><span class="line">            if (out != null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                	out.close();</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>就是把每页保存成图片，然后 image src贴到html上。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-POI/" rel="tag"># Java||POI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/10/Excel转Html-POI系列(二)/" rel="next" title="Excel转Html-POI系列(二)">
+                <i class="fa fa-chevron-left"></i> Excel转Html-POI系列(二)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/17/Oracle数据库导入导出/" rel="prev" title="Oracle数据库导入导出">
+                Oracle数据库导入导出 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.jpg" alt="千禧年">
+            
+              <p class="site-author-name" itemprop="name">千禧年</p>
+              <p class="site-description motion-element" itemprop="description">changzhi_java@163.com</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">2.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">千禧年</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="JAVA">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java||POI,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景实现xls和xlsx文档在线预览 准备 Excel转Html分两种 xls格式转Html xlsx格式转Html 注意Excel转Html方法比较多，大部分是格式或颜色处理，下包包含所有方法    代码 代码自动区分xls和xlsx格式 123456789101112131415161718192021222324252627282930313233343536373839404142/***">
+<meta name="keywords" content="Java||POI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Excel转Html-POI系列(二)">
+<meta property="og:url" content="http://qianxinian.top/2018/09/10/Excel转Html-POI系列(二)/index.html">
+<meta property="og:site_name" content="千禧年">
+<meta property="og:description" content="背景实现xls和xlsx文档在线预览 准备 Excel转Html分两种 xls格式转Html xlsx格式转Html 注意Excel转Html方法比较多，大部分是格式或颜色处理，下包包含所有方法    代码 代码自动区分xls和xlsx格式 123456789101112131415161718192021222324252627282930313233343536373839404142/***">
+<meta property="og:locale" content="JAVA">
+<meta property="og:updated_time" content="2019-09-04T05:47:03.061Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Excel转Html-POI系列(二)">
+<meta name="twitter:description" content="背景实现xls和xlsx文档在线预览 准备 Excel转Html分两种 xls格式转Html xlsx格式转Html 注意Excel转Html方法比较多，大部分是格式或颜色处理，下包包含所有方法    代码 代码自动区分xls和xlsx格式 123456789101112131415161718192021222324252627282930313233343536373839404142/***">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":14,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://qianxinian.top/2018/09/10/Excel转Html-POI系列(二)/">
+
+
+
+
+
+  <title>Excel转Html-POI系列(二) | 千禧年</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="JAVA">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">千禧年</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">JAVA</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://qianxinian.top/2018/09/10/Excel转Html-POI系列(二)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="千禧年">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="千禧年">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Excel转Html-POI系列(二)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-10T20:08:00+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>实现xls和xlsx文档在线预览</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li>Excel转Html分两种<ol>
+<li>xls格式转Html</li>
+<li>xlsx格式转Html</li>
+<li>注意Excel转Html方法比较多，大部分是格式或颜色处理，下包包含所有方法</li>
+</ol>
+</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><ol>
+<li><p>代码自动区分xls和xlsx格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* Excel转Html</span><br><span class="line">* @param SourcePath excel文件地址</span><br><span class="line">* @param targetPath html文件输出地址</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">public static String excelToHtml(String SourcePath,String targetPath) &#123;</span><br><span class="line">    long startTime = System.currentTimeMillis(); //开始时间</span><br><span class="line">    InputStream is = null;</span><br><span class="line">    String htmlExcel = null;</span><br><span class="line">	try &#123;</span><br><span class="line">        //获取源文件</span><br><span class="line">        File sourcefile = new File(SourcePath);</span><br><span class="line">        is = new FileInputStream(sourcefile);</span><br><span class="line">        //初始化工作本</span><br><span class="line">        Workbook wb = WorkbookFactory.create(is);</span><br><span class="line">        //判断类型</span><br><span class="line">    if (wb instanceof XSSFWorkbook) &#123;</span><br><span class="line">        //xlsx对应XSSFWorkbook</span><br><span class="line">        XSSFWorkbook xWb = (XSSFWorkbook) wb;</span><br><span class="line">        //获取转换后Html的内容</span><br><span class="line">        htmlExcel = ExcelToHtml.getExcelInfo(xWb, true);</span><br><span class="line">        FileUtils.writeFile(htmlExcel, targetPath);</span><br><span class="line">    &#125; else if (wb instanceof HSSFWorkbook) &#123;</span><br><span class="line">        //xls对应HSSFWorkbook</span><br><span class="line">        HSSFWorkbook hWb = (HSSFWorkbook) wb;</span><br><span class="line">        //获取转换后Html的内容</span><br><span class="line">        htmlExcel = ExcelToHtml.getExcelInfo(hWb, true);</span><br><span class="line">        FileUtils.writeFile(htmlExcel, targetPath);</span><br><span class="line">    &#125;</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">    	e.printStackTrace();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">        	is.close();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">        	e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(&quot;Excel表格转换时间&quot; + (System.currentTimeMillis() - startTime) + &quot; ms.&quot;); //结束时间</span><br><span class="line">    return htmlExcel;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>核心代码，生成Html内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">*</span><br><span class="line">* @param wb Excel对象</span><br><span class="line">* @param isWithStyle 是否设置样式(默认true)</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">private static String getExcelInfo(Workbook wb, boolean isWithStyle) &#123;</span><br><span class="line">    StringBuffer sb = new StringBuffer();</span><br><span class="line">    int sheetCounts = wb.getNumberOfSheets();</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; sheetCounts; i++) &#123;</span><br><span class="line">        // 获取Sheet页面内容</span><br><span class="line">        Sheet sheet = wb.getSheetAt(i);</span><br><span class="line">        //当前Sheet总行数</span><br><span class="line">        int lastRowNum = sheet.getLastRowNum();</span><br><span class="line">        Map&lt;String, String&gt; map[] = getRowSpanColSpanMap(sheet);</span><br><span class="line">        sb.append(&quot;&lt;br&gt;&lt;br&gt;&quot;);</span><br><span class="line">        sb.append(sheet.getSheetName());</span><br><span class="line">        sb.append(&quot;&lt;table style=&apos;border-collapse:collapse;&apos; width=&apos;100%&apos;&gt;&quot;);</span><br><span class="line">        Row row = null; // 兼容</span><br><span class="line">        Cell cell = null; // 兼容</span><br><span class="line">        //循环所有行</span><br><span class="line">        for (int rowNum = sheet.getFirstRowNum(); rowNum &lt;= lastRowNum; rowNum++) &#123;</span><br><span class="line">            //row当前Excel行内容</span><br><span class="line">            row = sheet.getRow(rowNum);</span><br><span class="line">            if (row == null) &#123;</span><br><span class="line">                sb.append(&quot;&lt;tr&gt;&lt;td &gt; &amp;nbsp;&lt;/td&gt;&lt;/tr&gt;&quot;);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            sb.append(&quot;&lt;tr&gt;&quot;);</span><br><span class="line">            //获取该行所有列数</span><br><span class="line">            int lastColNum = row.getLastCellNum();</span><br><span class="line">            for (int colNum = 0; colNum &lt; lastColNum; colNum++) &#123;</span><br><span class="line">                //获取当前单元格</span><br><span class="line">                cell = row.getCell(colNum);</span><br><span class="line">                // 特殊情况 空白的单元格会返回null</span><br><span class="line">                if (cell == null) &#123;</span><br><span class="line">                    sb.append(&quot;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&quot;);</span><br><span class="line">                    continue;</span><br><span class="line">                &#125;</span><br><span class="line">                //stringValue=当前单元格内容</span><br><span class="line">                String stringValue = getCellValue(cell);</span><br><span class="line">                //根据获取的Excel位置，设置表单部分样式</span><br><span class="line">                if (map[0].containsKey(rowNum + &quot;,&quot; + colNum)) &#123;</span><br><span class="line">                    String pointString = map[0].get(rowNum + &quot;,&quot; + colNum);</span><br><span class="line">                    map[0].remove(rowNum + &quot;,&quot; + colNum);</span><br><span class="line">                    int bottomeRow = Integer.valueOf(pointString.split(&quot;,&quot;)[0]);</span><br><span class="line">                    int bottomeCol = Integer.valueOf(pointString.split(&quot;,&quot;)[1]);</span><br><span class="line">                    int rowSpan = bottomeRow - rowNum + 1;</span><br><span class="line">                    int colSpan = bottomeCol - colNum + 1;</span><br><span class="line">                    sb.append(&quot;&lt;td rowspan= &apos;&quot; + rowSpan + &quot;&apos; colspan= &apos;&quot; + colSpan + &quot;&apos; &quot;);</span><br><span class="line">                &#125; else if (map[1].containsKey(rowNum + &quot;,&quot; + colNum)) &#123;</span><br><span class="line">                    map[1].remove(rowNum + &quot;,&quot; + colNum);</span><br><span class="line">                    continue;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                	sb.append(&quot;&lt;td &quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                // 判断是否需要样式</span><br><span class="line">                if (isWithStyle) &#123;</span><br><span class="line">                    // 处理单元格样式</span><br><span class="line">                    dealExcelStyle(wb, sheet, cell, sb);</span><br><span class="line">                &#125;</span><br><span class="line">                sb.append(&quot;&gt;&quot;);</span><br><span class="line">                if (stringValue == null || &quot;&quot;.equals(stringValue.trim())) &#123;</span><br><span class="line">                	sb.append(&quot; &amp;nbsp; &quot;);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    // 将ascii码为160的空格转换为html下的空格（&amp;nbsp;）</span><br><span class="line">                    sb.append(stringValue.replace(String.valueOf((char) 160), &quot;&amp;nbsp;&quot;));</span><br><span class="line">                &#125;</span><br><span class="line">                sb.append(&quot;&lt;/td&gt;&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            sb.append(&quot;&lt;/tr&gt;&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        sb.append(&quot;&lt;/table&gt;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return sb.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>合并单元格的判断处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 获取单元格长度宽度(用于一些合并单元格，方便设置页面格式)</span><br><span class="line">* @param sheet</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">private static Map&lt;String, String&gt;[] getRowSpanColSpanMap(Sheet sheet) &#123;</span><br><span class="line">    Map&lt;String, String&gt; map0 = new HashMap&lt;String, String&gt;();</span><br><span class="line">    Map&lt;String, String&gt; map1 = new HashMap&lt;String, String&gt;();</span><br><span class="line">    int mergedNum = sheet.getNumMergedRegions();</span><br><span class="line">    CellRangeAddress range = null;</span><br><span class="line">    for (int i = 0; i &lt; mergedNum; i++) &#123;</span><br><span class="line">        range = sheet.getMergedRegion(i);</span><br><span class="line">        int topRow = range.getFirstRow();</span><br><span class="line">        int topCol = range.getFirstColumn();</span><br><span class="line">        int bottomRow = range.getLastRow();</span><br><span class="line">        int bottomCol = range.getLastColumn();</span><br><span class="line">        map0.put(topRow + &quot;,&quot; + topCol, bottomRow + &quot;,&quot; + bottomCol);</span><br><span class="line">        // System.out.println(topRow + &quot;,&quot; + topCol + &quot;,&quot; + bottomRow + &quot;,&quot;</span><br><span class="line">        // + bottomCol);</span><br><span class="line">        int tempRow = topRow;</span><br><span class="line">        while (tempRow &lt;= bottomRow) &#123;</span><br><span class="line">        	int tempCol = topCol;</span><br><span class="line">            while (tempCol &lt;= bottomCol) &#123;</span><br><span class="line">                map1.put(tempRow + &quot;,&quot; + tempCol, &quot;&quot;);</span><br><span class="line">                tempCol++;</span><br><span class="line">            &#125;</span><br><span class="line">            tempRow++;</span><br><span class="line">        &#125;</span><br><span class="line">        map1.remove(topRow + &quot;,&quot; + topCol);</span><br><span class="line">    &#125;</span><br><span class="line">    Map[] map = &#123; map0, map1 &#125;;</span><br><span class="line">    return map;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取单元格内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 200 * 获取表格单元格Cell内容 201 * @param cell 202 * @return 203</span><br><span class="line">*/</span><br><span class="line">private static String getCellValue(Cell cell) &#123;</span><br><span class="line"></span><br><span class="line">    String result = new String();</span><br><span class="line">    switch (cell.getCellType()) &#123;</span><br><span class="line">        case Cell.CELL_TYPE_NUMERIC:// 数字类型</span><br><span class="line">        if (HSSFDateUtil.isCellDateFormatted(cell)) &#123;// 处理日期格式、时间格式</span><br><span class="line">            SimpleDateFormat sdf = null;</span><br><span class="line">            if (cell.getCellStyle().getDataFormat() == HSSFDataFormat.getBuiltinFormat(&quot;h:mm&quot;)) &#123;</span><br><span class="line">            	sdf = new SimpleDateFormat(&quot;HH:mm&quot;);</span><br><span class="line">            &#125; else &#123;// 日期</span><br><span class="line">            	sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            Date date = cell.getDateCellValue();</span><br><span class="line">            result = sdf.format(date);</span><br><span class="line">        &#125; else if (cell.getCellStyle().getDataFormat() == 58) &#123;</span><br><span class="line">            // 处理自定义日期格式：m月d日(通过判断单元格的格式id解决，id的值是58)</span><br><span class="line">            SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span><br><span class="line">            double value = cell.getNumericCellValue();</span><br><span class="line">            Date date = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(value);</span><br><span class="line">            result = sdf.format(date);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            double value = cell.getNumericCellValue();</span><br><span class="line">            CellStyle style = cell.getCellStyle();</span><br><span class="line">            DecimalFormat format = new DecimalFormat();</span><br><span class="line">            String temp = style.getDataFormatString();</span><br><span class="line">            // 单元格设置成常规</span><br><span class="line">            if (temp.equals(&quot;General&quot;)) &#123;</span><br><span class="line">            	format.applyPattern(&quot;#&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            result = format.format(value);</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line">        case Cell.CELL_TYPE_STRING:// String类型</span><br><span class="line">        result = cell.getRichStringCellValue().toString();</span><br><span class="line">        break;</span><br><span class="line">        case Cell.CELL_TYPE_BLANK:</span><br><span class="line">        result = &quot;&quot;;</span><br><span class="line">        break;</span><br><span class="line">        default:</span><br><span class="line">        result = &quot;&quot;;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>处理表格样式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 251 * 处理表格样式 252 * @param wb 253 * @param sheet 254 * @param cell 255</span><br><span class="line">* * @param sb 256</span><br><span class="line">*/</span><br><span class="line">private static void dealExcelStyle(Workbook wb, Sheet sheet, Cell cell, StringBuffer sb) &#123;</span><br><span class="line">    CellStyle cellStyle = cell.getCellStyle();</span><br><span class="line">    if (cellStyle != null) &#123;</span><br><span class="line">        short alignment = cellStyle.getAlignment();</span><br><span class="line">        // 单元格内容的水平对齐方式</span><br><span class="line">        sb.append(&quot;align=&apos;&quot; + convertAlignToHtml(alignment) + &quot;&apos; &quot;);</span><br><span class="line">        short verticalAlignment = cellStyle.getVerticalAlignment();</span><br><span class="line">        // 单元格中内容的垂直排列方式</span><br><span class="line">        sb.append(&quot;valign=&apos;&quot; + convertVerticalAlignToHtml(verticalAlignment) + &quot;&apos; &quot;);</span><br><span class="line"></span><br><span class="line">        if (wb instanceof XSSFWorkbook) &#123;</span><br><span class="line">            XSSFFont xf = ((XSSFCellStyle) cellStyle).getFont();</span><br><span class="line">            short boldWeight = xf.getBoldweight();</span><br><span class="line">            sb.append(&quot;style=&apos;&quot;);</span><br><span class="line">            sb.append(&quot;font-weight:&quot; + boldWeight + &quot;;&quot;); // 字体加粗</span><br><span class="line">            sb.append(&quot;font-size: &quot; + xf.getFontHeight() / 2 + &quot;%;&quot;); // 字体大小</span><br><span class="line">            int columnWidth = sheet.getColumnWidth(cell.getColumnIndex());</span><br><span class="line">            sb.append(&quot;width:&quot; + columnWidth + &quot;px;&quot;);</span><br><span class="line">            XSSFColor xc = xf.getXSSFColor();</span><br><span class="line">            if (xc != null &amp;&amp; !&quot;&quot;.equals(xc)) &#123;</span><br><span class="line">                sb.append(&quot;color:#&quot; + xc.getARGBHex().substring(2) + &quot;;&quot;); // 字体颜色</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            XSSFColor bgColor = (XSSFColor) cellStyle.getFillForegroundColorColor();</span><br><span class="line">            if (bgColor != null &amp;&amp; !&quot;&quot;.equals(bgColor)) &#123;</span><br><span class="line">                sb.append(&quot;background-color:#&quot; + bgColor.getARGBHex().substring(2) + &quot;;&quot;); 	// 背景颜色</span><br><span class="line">            &#125;</span><br><span class="line">            sb.append(getBorderStyle(0, cellStyle.getBorderTop(),</span><br><span class="line">            ((XSSFCellStyle) cellStyle).getTopBorderXSSFColor()));</span><br><span class="line">            sb.append(getBorderStyle(1, cellStyle.getBorderRight(),</span><br><span class="line">            ((XSSFCellStyle) cellStyle).getRightBorderXSSFColor()));</span><br><span class="line">            sb.append(getBorderStyle(2, cellStyle.getBorderBottom(),</span><br><span class="line">            ((XSSFCellStyle) cellStyle).getBottomBorderXSSFColor()));</span><br><span class="line">            sb.append(getBorderStyle(3, cellStyle.getBorderLeft(),</span><br><span class="line">            ((XSSFCellStyle) cellStyle).getLeftBorderXSSFColor()));</span><br><span class="line">        &#125; else if (wb instanceof HSSFWorkbook) &#123;</span><br><span class="line">            HSSFFont hf = ((HSSFCellStyle) cellStyle).getFont(wb);</span><br><span class="line">            short boldWeight = hf.getBoldweight();</span><br><span class="line">            short fontColor = hf.getColor();</span><br><span class="line">            sb.append(&quot;style=&apos;&quot;);</span><br><span class="line">            HSSFPalette palette = ((HSSFWorkbook) wb).getCustomPalette(); // 类HSSFPalette用于求的颜色的国际标准形式</span><br><span class="line">            HSSFColor hc = palette.getColor(fontColor);</span><br><span class="line">            sb.append(&quot;font-weight:&quot; + boldWeight + &quot;;&quot;); // 字体加粗</span><br><span class="line">            sb.append(&quot;font-size: &quot; + hf.getFontHeight() / 2 + &quot;%;&quot;); // 字体大小</span><br><span class="line">            String fontColorStr = convertToStardColor(hc);</span><br><span class="line">            if (fontColorStr != null &amp;&amp; !&quot;&quot;.equals(fontColorStr.trim())) &#123;</span><br><span class="line">            	sb.append(&quot;color:&quot; + fontColorStr + &quot;;&quot;); // 字体颜色</span><br><span class="line">            &#125;</span><br><span class="line">            int columnWidth = sheet.getColumnWidth(cell.getColumnIndex());</span><br><span class="line">            sb.append(&quot;width:&quot; + columnWidth + &quot;px;&quot;);</span><br><span class="line">            short bgColor = cellStyle.getFillForegroundColor();</span><br><span class="line">            hc = palette.getColor(bgColor);</span><br><span class="line">            String bgColorStr = convertToStardColor(hc);</span><br><span class="line">            if (bgColorStr != null &amp;&amp; !&quot;&quot;.equals(bgColorStr.trim())) &#123;</span><br><span class="line">            	sb.append(&quot;background-color:&quot; + bgColorStr + &quot;;&quot;); // 背景颜色</span><br><span class="line">            &#125;</span><br><span class="line">            sb.append(getBorderStyle(palette, 0, cellStyle.getBorderTop(), cellStyle.getTopBorderColor()));</span><br><span class="line">            sb.append(getBorderStyle(palette, 1, cellStyle.getBorderRight(), cellStyle.getRightBorderColor()));</span><br><span class="line">            sb.append(getBorderStyle(palette, 3, cellStyle.getBorderLeft(), cellStyle.getLeftBorderColor()));</span><br><span class="line">            sb.append(getBorderStyle(palette, 2, cellStyle.getBorderBottom(), cellStyle.getBottomBorderColor()));</span><br><span class="line">        &#125;</span><br><span class="line">        sb.append(&quot;&apos; &quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>单元格内容展示方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 330 * 单元格内容的水平对齐方式 331 * @param alignment 332 * @return 333</span><br><span class="line">*/</span><br><span class="line">private static String convertAlignToHtml(short alignment) &#123;</span><br><span class="line"></span><br><span class="line">    String align = &quot;left&quot;;</span><br><span class="line">    switch (alignment) &#123;</span><br><span class="line">        case CellStyle.ALIGN_LEFT:</span><br><span class="line">        	align = &quot;left&quot;;</span><br><span class="line">        break;</span><br><span class="line">        case CellStyle.ALIGN_CENTER:</span><br><span class="line">        	align = &quot;center&quot;;</span><br><span class="line">        break;</span><br><span class="line">        case CellStyle.ALIGN_RIGHT:</span><br><span class="line">        	align = &quot;right&quot;;</span><br><span class="line">        break;</span><br><span class="line">        default:</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return align;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* 354 * 单元格中内容的垂直排列方式 355 * @param verticalAlignment 356 * @return 357</span><br><span class="line">*/</span><br><span class="line">private static String convertVerticalAlignToHtml(short verticalAlignment) &#123;</span><br><span class="line">    String valign = &quot;middle&quot;;</span><br><span class="line">    switch (verticalAlignment) &#123;</span><br><span class="line">    	case CellStyle.VERTICAL_BOTTOM:</span><br><span class="line">    		valign = &quot;bottom&quot;;</span><br><span class="line">        break;</span><br><span class="line">        case CellStyle.VERTICAL_CENTER:</span><br><span class="line">            valign = &quot;center&quot;;</span><br><span class="line">        break;</span><br><span class="line">        case CellStyle.VERTICAL_TOP:</span><br><span class="line">            valign = &quot;top&quot;;</span><br><span class="line">        break;</span><br><span class="line">        default:</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return valign;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>表格颜色处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 处理表格颜色</span><br><span class="line">* @param hc</span><br><span class="line">* @return</span><br><span class="line">*/</span><br><span class="line">private static String convertToStardColor(HSSFColor hc) &#123;</span><br><span class="line">    StringBuffer sb = new StringBuffer(&quot;&quot;);</span><br><span class="line">    if (hc != null) &#123;</span><br><span class="line">        if (HSSFColor.AUTOMATIC.index == hc.getIndex()) &#123;</span><br><span class="line">        	return null;</span><br><span class="line">        &#125;</span><br><span class="line">        sb.append(&quot;#&quot;);</span><br><span class="line">        for (int i = 0; i &lt; hc.getTriplet().length; i++) &#123;</span><br><span class="line">        	sb.append(fillWithZero(Integer.toHexString(hc.getTriplet()[i])));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return sb.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>剩下一些格式处理方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">private static String fillWithZero(String str) &#123;</span><br><span class="line">    if (str != null &amp;&amp; str.length() &lt; 2) &#123;</span><br><span class="line">    	return &quot;0&quot; + str;</span><br><span class="line">    &#125;</span><br><span class="line">    return str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static String[] bordesr = &#123; &quot;border-top:&quot;, &quot;border-right:&quot;, &quot;border-bottom:&quot;, &quot;border-left:&quot; &#125;;</span><br><span class="line">static String[] borderStyles = &#123; &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;, &quot;solid &quot;,</span><br><span class="line">&quot;solid &quot;, &quot;solid&quot;, &quot;solid&quot;, &quot;solid&quot;, &quot;solid&quot;, &quot;solid&quot; &#125;;</span><br><span class="line"></span><br><span class="line">private static String getBorderStyle(HSSFPalette palette, int b, short s, short t) &#123;</span><br><span class="line"></span><br><span class="line">    if (s == 0)</span><br><span class="line">    	return bordesr[b] + borderStyles[s] + &quot;#d0d7e5 1px;&quot;;</span><br><span class="line">    String borderColorStr = convertToStardColor(palette.getColor(t));</span><br><span class="line">    borderColorStr = borderColorStr == null || borderColorStr.length() &lt; 1 ? &quot;#000000&quot; : borderColorStr;</span><br><span class="line">    return bordesr[b] + borderStyles[s] + borderColorStr + &quot; 1px;&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static String getBorderStyle(int b, short s, XSSFColor xc) &#123;</span><br><span class="line">    if (s == 0)</span><br><span class="line">    	return bordesr[b] + borderStyles[s] + &quot;#d0d7e5 1px;&quot;;</span><br><span class="line">    if (xc != null &amp;&amp; !&quot;&quot;.equals(xc)) &#123;</span><br><span class="line">        String borderColorStr = xc.getARGBHex();// t.getARGBHex();</span><br><span class="line">        borderColorStr = borderColorStr == null || borderColorStr.length() &lt; 1 ? &quot;#000000&quot;</span><br><span class="line">        : borderColorStr.substring(2);</span><br><span class="line">    	return bordesr[b] + borderStyles[s] + borderColorStr + &quot; 1px;&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	return &quot;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>代码这块是从印象笔记中复制过去的，格式有点乱….不过印象笔记上的更乱….后面部分代码是当时写demo的时候从网上摘下来的，所以后面几个方法没有debug过，只跟了前面逻辑，可以正常跑通。</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-POI/" rel="tag"># Java||POI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/10/PPT转Html-POI系列(四)/" rel="next" title="PPT转Html-POI系列(四)">
+                <i class="fa fa-chevron-left"></i> PPT转Html-POI系列(四)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/11/PDF转Html-POI系列(三)/" rel="prev" title="PDF转Html-POI系列(三)">
+                PDF转Html-POI系列(三) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/header.jpg" alt="千禧年">
+            
+              <p class="site-author-name" itemprop="name">千禧年</p>
+              <p class="site-description motion-element" itemprop="description">changzhi_java@163.com</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">2.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">千禧年</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
